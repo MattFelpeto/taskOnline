@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'task/style.css' %}">
+    <title>Task</title>
+</head>
+
+<body>
+
+    <h1 class='titulo-principal'>Organizador<h1>
+
+            <form action="{% url 'task:createTask' %}" method="post">
+                {% csrf_token %}
+                <fieldset>
+                    <legend>Crear nueva nota</legend>
+                    <label for="name">Nombre</label>
+                    <input type="text" id="name" name="name" required>
+                    <label for="description">Descripción</label>
+                    <textarea id="description" name="description" required></textarea>
+                    <label for="date">Fecha</label>
+                    <input type="date" id="date" name="date" required>
+                    <div class='checkbox-container'>
+                        <label for="completed">¿Completado?</label>
+                        <input type="checkbox" id="completed" name="completed">
+                    </div>
+                    <button class="btn-form" type="submit">Crear nota</button>
+                </fieldset>
+            </form>
+
+            {% for task in tasks %}
+            <fieldset class="task-fieldset">
+                <legend>Nota {{ task.id }}</legend>
+                <h2>{{ task.name }}</h2>
+                <p>{{ task.description }}</p>
+                <p>Creada: {{ task.date }}</p>
+                <p>Completed: {{ task.completed }}</p>
+                <a href="{% url 'task:deleteTask' task.id %}">Eliminar</a>
+            </fieldset>
+            {% endfor %}
+</body>
+
+</html>
